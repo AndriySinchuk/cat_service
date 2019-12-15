@@ -2,10 +2,7 @@ package com.cat.service.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,13 +11,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "cats")
-@AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Cat implements Serializable{
-
-    public Cat(){}
 
     private static final Integer serialVersionUID = 1;
 
