@@ -42,8 +42,8 @@ public class CatController {
         URI location = URI.create("/retrieve_cat");
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(location);
-        Optional<Cat> retrievedCat =  catRepository.findById(id);
-        return new ResponseEntity<>(retrievedCat, HttpStatus.OK);
+        Optional<Cat> retrievedCat = catRepository.findById(id);
+        return new ResponseEntity<>(retrievedCat, responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/delete{id}", method = RequestMethod.DELETE)
