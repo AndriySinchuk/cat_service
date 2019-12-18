@@ -3,6 +3,7 @@ package com.cat.service.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.io.Serializable;
 
@@ -13,16 +14,16 @@ import javax.persistence.*;
 @Table(name = "cats")
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Cat implements Serializable{
+public class Cat implements Serializable {
 
     private static final Integer serialVersionUID = 1;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cat_id")
-    private Integer catId;
+    @Column(name = "id")
+    private Long catId;
 
-    @Column(name = "cat_name")
+    @Column(name = "cat_name",unique = true)
     private String catName;
 
 //    @JoinColumn(name = "breed_id")

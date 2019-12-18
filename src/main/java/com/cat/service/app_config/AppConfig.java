@@ -1,6 +1,5 @@
 package com.cat.service.app_config;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -21,4 +20,6 @@ public class AppConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
 }
+
