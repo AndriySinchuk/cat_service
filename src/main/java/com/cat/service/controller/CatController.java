@@ -1,7 +1,9 @@
 package com.cat.service.controller;
 
 import com.cat.service.entity.Cat;
+import com.cat.service.exception_hanling.ThereIsNoSuchEntityException;
 import com.cat.service.repository.CatRepository;
+import com.google.common.collect.ImmutableList;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -11,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -32,10 +36,16 @@ public class CatController {
     @RequestMapping(value = "/cat/{id}", method = RequestMethod.POST)
     @ApiOperation("Retrieve cat")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cat info retrieved")})
+            @ApiResponse(code = 200, message = "Cat info retrieved"),
+            @ApiResponse(code = 404, message = "Cat not found")})
     public ResponseEntity readCat(@PathVariable("id") Long id) {
         Optional<Cat> retrievedCat = catRepository.findById(id);
-        return new ResponseEntity<>(retrievedCat, HttpStatus.OK);
+        List<Cat> searchResult = new ArrayList<>();
+        retrievedCat.ifPresent(searchResult::add);
+        if (searchResult.size() < 1) {
+            throw new ThereIsNoSuchEntityException();
+        } else
+            return new ResponseEntity<>(ImmutableList.of(searchResult), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/cat/{id}", method = RequestMethod.DELETE)
