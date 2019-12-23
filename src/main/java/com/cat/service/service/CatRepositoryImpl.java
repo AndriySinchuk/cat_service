@@ -5,6 +5,10 @@ import com.cat.service.repository.CatRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 @Repository("CatRepo")
