@@ -3,22 +3,23 @@ package com.cat.service.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name = "cat_owners")
-@AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CatOwner implements Serializable{
+public class CatOwner implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "owner_id")
-    private int owner_id;
+    private Long owner_id;
 
     @Column(name = "owner_name")
     private String ownerName;

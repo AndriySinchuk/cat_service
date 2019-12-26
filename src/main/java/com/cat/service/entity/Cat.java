@@ -2,12 +2,11 @@ package com.cat.service.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
-
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
@@ -26,11 +25,9 @@ public class Cat implements Serializable {
     @Column(name = "cat_name",unique = true)
     private String catName;
 
-//    @JoinColumn(name = "breed_id")
     @Column(name = "breed_id")
     private int breedId;
 
-//    @JoinColumn(name = "owner_Id")
     @Column(name = "owner_id")
     private int owner_Id;
 

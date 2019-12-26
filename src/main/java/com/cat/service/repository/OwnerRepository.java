@@ -1,4 +1,7 @@
 package com.cat.service.repository;
 
-public interface OwnerRepository {
+import com.cat.service.entity.CatOwner;
+import org.springframework.data.repository.CrudRepository;
+
+public interface OwnerRepository extends CrudRepository<CatOwner, Long> {
 }

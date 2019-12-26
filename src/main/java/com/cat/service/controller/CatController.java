@@ -28,7 +28,7 @@ public class CatController {
     @Autowired
     private CatRepository catRepository;
 
-    @RequestMapping(value = "/cat", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     @ApiOperation("Add cat")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Cat persisted"),
@@ -39,10 +39,10 @@ public class CatController {
         } catch (DataIntegrityViolationException ex) {
             throw new DuplicateEntityException();
         }
-        return new ResponseEntity<>(cat, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/cat/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiOperation("Retrieve cat")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Info retrieved"),
@@ -53,7 +53,7 @@ public class CatController {
                 .orElseThrow(ThereIsNoSuchEntityException::new);
     }
 
-    @RequestMapping(value = "/cat/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ApiOperation("Delete cat by id")
     @ApiResponses(value = {
             @ApiResponse(code = 202, message = "Deleted by id")})
@@ -65,13 +65,10 @@ public class CatController {
     @RequestMapping(value = "/write/{id}", method = RequestMethod.GET)
     public void saveCatToDisk(@PathVariable("id") Long id) throws IOException {
         File file = new File("C:\\Users\\asinchuk\\Documents\\cats\\cat_" + id + ".txt");
-        BufferedWriter output = new BufferedWriter(new FileWriter(file));
         Optional<Cat> retrievedCat = catRepository.findById(id);
         List searchResult = Collections.singletonList(retrievedCat.get());
-            try {
+            try  (BufferedWriter output = new BufferedWriter(new FileWriter(file))) {
                 output.write(searchResult.toString());
-            } finally {
-                output.close();
             }
     }
 }

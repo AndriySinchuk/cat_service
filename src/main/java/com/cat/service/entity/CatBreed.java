@@ -2,29 +2,32 @@ package com.cat.service.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AllArgsConstructor;
-
-import java.io.Serializable;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Data
 @Entity
 @Table(name = "cat_breeds")
-@AllArgsConstructor
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CatBreed implements Serializable{
+public class CatBreed implements Serializable {
+
+    private static final Integer serialVersionUID = 1;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "breed_id")
-    private int breed_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "cat_breed")
+    @Column(name = "breed")
     private String catBreed;
 
     @Override
     public String toString() {
-        return "Cat breed [id = " + breed_id + ", cat breed = " + catBreed;
+        return "Cat breed [id = " + id + ", cat breed = " + catBreed;
     }
 
 }

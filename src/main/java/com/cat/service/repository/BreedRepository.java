@@ -1,4 +1,7 @@
 package com.cat.service.repository;
 
-public interface BreedRepository {
+import com.cat.service.entity.CatBreed;
+import org.springframework.data.repository.CrudRepository;
+
+public interface BreedRepository extends CrudRepository<CatBreed, Long> {
 }
