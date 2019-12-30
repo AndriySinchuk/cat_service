@@ -2,6 +2,7 @@ package com.cat.service.entity;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,18 +19,19 @@ public class Cat implements Serializable {
     private static final Integer serialVersionUID = 1;
 
     @Id
+    @ApiModelProperty(hidden = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long catId;
 
-    @Column(name = "cat_name",unique = true)
+    @Column(name = "cat_name", unique = true)
     private String catName;
 
     @Column(name = "breed_id")
-    private int breedId;
+    private Long breedId;
 
     @Column(name = "owner_id")
-    private int owner_Id;
+    private Long owner_Id;
 
     @Override
     public String toString() {

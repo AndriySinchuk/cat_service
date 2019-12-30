@@ -1,7 +1,6 @@
 package com.cat.service.controller;
 
 import com.cat.service.entity.CatBreed;
-import com.cat.service.exception_hanling.ThereIsNoSuchEntityException;
 import com.cat.service.repository.BreedRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -14,36 +13,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/breed")
-public class CatBreedController {
+@RequestMapping("/admin")
+public class AdminController {
+
     @Autowired
     BreedRepository breedRepository;
 
     Logger logger;
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/breed", method = RequestMethod.POST)
     @ApiOperation("Add cat breed")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Breed persisted")})
-    public ResponseEntity addCat(@RequestBody CatBreed breed) {
+    public ResponseEntity addCatBreed(@RequestBody CatBreed breed) {
         try {
-            breedRepository.save(breed);
+            breedRepository.save(breed).getId();
         } catch (HibernateException ex) {
             logger.error("", ex);
-        }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        } return new ResponseEntity(HttpStatus.CONFLICT);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation("Retrieve cat breed")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Info retrieved"),
-            @ApiResponse(code = 404, message = "Not found")})
-    public CatBreed readBreed(@PathVariable("id") Long id) {
-        return breedRepository
-                .findById(id)
-                .orElseThrow(ThereIsNoSuchEntityException::new);
-    }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ApiOperation("Delete breed by id")
