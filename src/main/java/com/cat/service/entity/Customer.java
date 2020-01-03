@@ -1,5 +1,6 @@
 package com.cat.service.entity;
 
+
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,31 +12,26 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "cats")
+@Table(name = "customers")
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class Cat implements Serializable {
-
-    private static final Integer serialVersionUID = 1;
+public class Customer implements Serializable {
 
     @Id
     @ApiModelProperty(hidden = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long catId;
+    @Column(name = "customer_id")
+    private Long customer_id;
 
-    @Column(name = "cat_name", unique = true)
-    private String catName;
+    @Column(name = "customer_name")
+    private String customerName;
 
-    @Column(name = "breed_id")
-    private Long breedId;
-
-    @Column(name = "owner_id")
-    private Long owner_Id;
+    @Column(name = "customer_second_name")
+    private String customerSecondName;
 
     @Override
     public String toString() {
-        return "Cat [id = " + catId + ", cat_name = " + catName + ", breed_id = " + breedId + ", ownerId = " + owner_Id + "]";
+        return "Owner [id = " + customer_id + ", owner_name = " + customerName + ", owner_second_name = " + customerSecondName;
     }
 
 }

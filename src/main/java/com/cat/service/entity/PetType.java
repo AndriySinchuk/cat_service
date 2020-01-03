@@ -11,10 +11,10 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "cat_breeds")
+@Table(name = "pet_types")
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class CatBreed implements Serializable {
+public class PetType implements Serializable {
 
     private static final Integer serialVersionUID = 1;
 
@@ -24,12 +24,12 @@ public class CatBreed implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "breed")
-    private String catBreed;
+    @Column(name = "type")
+    private String type;
 
     @Override
     public String toString() {
-        return "Cat breed [id = " + id + ", cat breed = " + catBreed;
+        return "Pet type [id = " + id + ", type = " + type;
     }
 
 }
