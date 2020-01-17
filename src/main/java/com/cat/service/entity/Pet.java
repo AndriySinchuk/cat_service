@@ -6,10 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -22,11 +23,11 @@ public class Pet implements Serializable {
     private static final Integer serialVersionUID = 1;
 
     @Id
-    @ApiModelProperty(hidden = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "pet_name", unique = true)
     private String petName;
 
@@ -34,16 +35,22 @@ public class Pet implements Serializable {
     private Long breedId;
 
     @Column(name = "customer_id")
-    private Long customer_Id;
+    private Long customerId;
 
     @Column(name = "doctor_id")
     private Long doctorId;
 
-    @Column(name = "date")
+    @Column(name = "date_in")
     @ApiModelProperty(hidden = true)
     @CreatedDate
     @Temporal(TemporalType.DATE)
-    private Date createdAt = new Date();
+    private Date passedIn = new Date();
+
+    @Column(name = "date_out")
+    @CreatedDate
+    @Temporal(TemporalType.DATE)
+    @Nullable
+    private Date passedOut = new Date();
 
     @Column(name = "diagnosis")
     private String diagnosis;
@@ -53,9 +60,10 @@ public class Pet implements Serializable {
         return "Pet [id = " + id + ", " +
                 "pet_name = " + petName + ", " +
                 "breed_id = " + breedId + ", " +
-                "ownerId = " + customer_Id + ", " +
+                "ownerId = " + customerId + ", " +
                 "doctorId = " + doctorId + " ," +
-                "date = " + createdAt + "," +
+                "date_in = " + passedIn + "," +
+                "date_out = " + passedOut + "," +
                 "diagnosis = " + diagnosis + "]";
     }
 

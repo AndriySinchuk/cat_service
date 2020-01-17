@@ -1,8 +1,13 @@
 package com.cat.service.repository;
 
 import com.cat.service.entity.Customer;
+import org.springframework.data.repository.CrudRepository;
 
-public interface CustomerRepositoryCustom {
+import java.util.Optional;
 
-    Customer findCustomerByCustomerNameAndCustomerSecondName(String name, String ownerName);
+public interface CustomerRepositoryCustom extends CrudRepository<Customer, Long> {
+
+    Optional<Customer> findCustomerByCustomerNameAndCustomerSecondName(String name, String ownerName);
+
+    Optional<Customer> findCustomerByCustomerPhoneNumber(Long phoneNumber);
 }

@@ -2,6 +2,7 @@ package com.cat.service.controller;
 
 import com.cat.service.entity.Pet;
 import com.cat.service.exception_hanling.DuplicateEntityException;
+import com.cat.service.exception_hanling.InfoMissingInDB;
 import com.cat.service.exception_hanling.ThereIsNoSuchEntityException;
 import com.cat.service.repository.BreedRepository;
 import com.cat.service.repository.PetRepository;
@@ -14,8 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pet")
@@ -26,13 +28,15 @@ public class PetController {
     @Autowired
     PetRepository petRepository;
 
+    private static final SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd");
+
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("Add pet or update by id")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Pet persisted"),
             @ApiResponse(code = 403, message = "Duplicate pet not allowed"),
             @ApiResponse(code = 404, message = "Pet not found")})
-    public ResponseEntity addCat(@RequestBody Pet pet) throws DuplicateEntityException {
+    public ResponseEntity addPet(@RequestBody Pet pet) throws DuplicateEntityException {
         try {
             petRepository.save(pet);
         } catch (DataIntegrityViolationException ex) {
@@ -46,10 +50,24 @@ public class PetController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Info retrieved"),
             @ApiResponse(code = 404, message = "Not found")})
-    public Pet readCat(@PathVariable("id") Long id) {
+    public Pet readPet(@PathVariable("id") Long id) {
         return petRepository
                 .findById(id)
                 .orElseThrow(ThereIsNoSuchEntityException::new);
+    }
+
+    @RequestMapping(value = "/by_customer_id/{id}", method = RequestMethod.GET)
+    @ApiOperation("Retrieve pets by customer id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Info retrieved"),
+            @ApiResponse(code = 404, message = "Not found")})
+    public List<Pet> retrievePetsByCustomerId(@PathVariable("id") Long id) {
+        List<Pet> pets = petRepository
+                .findPetsByCustomerId(id);
+        if (pets.isEmpty()) {
+            throw new InfoMissingInDB();
+        }
+        return Collections.unmodifiableList(pets);
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
@@ -63,15 +81,30 @@ public class PetController {
 
     @RequestMapping(value = "/by_diagnosis/{diagnosis}", method = RequestMethod.GET)
     @ApiOperation("Find pets by diagnosis")
-    public Iterable<Pet> findPetsByDiagnosis(@RequestParam String diagnosis) {
-
-        return petRepository.findPetsByDiagnosis(diagnosis);
+    public List<Pet> findPetsByDiagnosis(@RequestParam String diagnosis) {
+        List<Pet> pets = petRepository.findPetsByDiagnosis(diagnosis);
+        if (pets.isEmpty()) {
+            throw new InfoMissingInDB();
+        }
+        return Collections.unmodifiableList(pets);
     }
 
-    @RequestMapping(value = "/by_date{date}", method = RequestMethod.GET)
-    @ApiOperation("Find pets by date")
-    public Iterable<Pet> findPetsByDate(@RequestParam String date ) throws ParseException {
-        return petRepository.findPetByCreatedAt(new SimpleDateFormat("yyyy-MM-dd").parse(date));
+    @RequestMapping(value = "/by_diagnosis_and_date_range", method = RequestMethod.GET)
+    @ApiOperation("Find all pets by diagnosis and date range")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Info retrieved"),
+            @ApiResponse(code = 404, message = "Range is empty")})
+    public List<Pet> findAllPetsByDiagnosisAndDateRange(
+            @RequestParam String diagnosis,
+            @RequestParam String dateFrom,
+            @RequestParam String dateTo) throws Throwable {
+        List<Pet> pets = petRepository
+                .findPetsByDiagnosisAndPassedInGreaterThanEqualAndPassedOutLessThanEqual(
+                        diagnosis, currentDate.parse(dateFrom), currentDate.parse(dateTo));
+        if (pets.isEmpty()) {
+            throw new InfoMissingInDB();
+        }
+        return pets;
     }
 
 }

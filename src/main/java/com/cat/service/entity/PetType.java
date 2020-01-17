@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -24,6 +25,7 @@ public class PetType implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "type")
     private String type;
 

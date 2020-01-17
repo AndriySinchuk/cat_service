@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -19,6 +20,7 @@ public class Doctor {
     @Column(name = "doctor_id")
     private Long doctorId;
 
+    @NotNull
     @Column(name = "doctor_name")
     private String doctorName;
 
